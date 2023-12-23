@@ -43,31 +43,30 @@ module.exports = {
 
                     const countryName = res[0]['countryName'];
                     const countryID = res[0]['id'];
-                    var errlist = null;
+                    var errlist = "Brak błędów";
 
                     // usuwanie roli
                     try {
                         const countryRole = await guild.roles.cache.find((r) => r.name === countryName);
                         await countryRole.delete("Kraj został usunięty");
                     } catch (error) {
-                        errlist += "* Stwierdzono problem: Ktoś usunął role sterowaną przez botą, pomijam usuwanie tej roli!\n";
+                        errlist = "* Stwierdzono problem: Ktoś usunął role sterowaną przez botą, pomijam usuwanie tej roli!\n";
                     }
 
 
                     // usuwanie kanałów i kategori
                     try {
-                        const countryCategory = guild.channels.cache.find(channel => channel.name === countryName);
-                        console.log(countryCategory.children);
-                        for(const channel of Array.from(countryCategory.children)){
-                            await channel.delete();
+                        const countryCategory = await guild.channels.cache.find(channel => channel.name === countryName);
+                        for(let [id, child] of countryCategory.children.cache){
+                            await child.delete()
                         }
                         await countryCategory.delete();
     
                     } catch (error) {
-                        errlist += "* Usunięto kanały/kategorie zarządzane przez bota, pomijam usuwanie kanałów!\n"
+                        errlist = "* Usunięto kanały/kategorie zarządzane przez bota, pomijam usuwanie kanałów!\n"
                     }
 
-                    // usuwanie wpisów z bazy
+                    //usuwanie wpisów z bazy
 
                     db.query(`DELETE FROM countryPlayers WHERE id = '${countryID}'`, (err,res) => {
                         if(err){
@@ -79,7 +78,9 @@ module.exports = {
                                     console.log("error occured during usunkraj.js (mysql)",err); 
                                 }
                                 else {
-                                    await interaction.editReply("Poprawnie usunięto kraj!\n",errlist || "");
+                                    try {
+                                        await interaction.editReply("Poprawnie usunięto kraj!\n",errlist);
+                                    } catch (error) {}
                                 }
                             });
                         }
