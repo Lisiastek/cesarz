@@ -1,6 +1,6 @@
 module.exports = {
     name: 'ping',
-    description: 'Just ping pong :3 Daje czas odpowiedzi bota.',
+    description: 'Just ping pong :3 Daje czas odpowiedzi bota...',
     // devOnly: false,
     // testOnly: false,
     // options: Object[],

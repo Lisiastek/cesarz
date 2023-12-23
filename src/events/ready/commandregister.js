@@ -1,4 +1,4 @@
-const { application } = require("express");
+// const { application } = require("express");
 const getapplicationcommands = require("../../util/getapplicationcommands");
 const getlocalcommands = require("../../util/getlocalcommands");
 const areCommandDiferent = require("../../util/areCommandDiferent");

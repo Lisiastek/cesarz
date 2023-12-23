@@ -39,7 +39,7 @@ module.exports = async (client, interaction) => {
 
         if(commandObject.permissionsRequired?.length){
             for(const permission of commandObject.permissionsRequired){
-                if(!interaction.member.permission.has(permission)){
+                if(!interaction.member.permissions.has(permission)){
                     interaction.reply({
                         content: "Bot odmówił wykonania komendy ze względu na niewystarczające uprawnienia użytkownika!",
                         ephemeral: true
@@ -54,7 +54,7 @@ module.exports = async (client, interaction) => {
                 const bot = interaction.guild.members.me;
 
                 if(!bot.permissions.has(permission)){
-                    if(!interaction.member.permission.has(permission)){
+                    if(!interaction.member.permissions.has(permission)){
                         interaction.reply({
                             content: "Bot odmówił wykonania komendy ze względu na niewystarczające uprawnienia bota!",
                             ephemeral: true
