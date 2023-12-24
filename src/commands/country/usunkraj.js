@@ -21,7 +21,7 @@ module.exports = {
     deleted: false,
 
     permissionsRequired: [PermissionsBitField.Flags.ViewAuditLog],
-    botPermissions: [PermissionsBitField.Flags.ManageChannels],
+    botPermissions: [PermissionsBitField.Flags.ManageChannels, PermissionsBitField.Flags.ManageRoles],
 
     callback: async (client, interaction) => {
         await interaction.deferReply();
@@ -44,6 +44,7 @@ module.exports = {
                     const countryName = res[0]['countryName'];
                     const countryID = res[0]['id'];
                     var errlist = "Brak błędów";
+                    await guild.channels.fetch();
 
                     // usuwanie roli
                     try {
@@ -68,21 +69,28 @@ module.exports = {
 
                     //usuwanie wpisów z bazy
 
-                    db.query(`DELETE FROM countryPlayers WHERE id = '${countryID}'`, (err,res) => {
+                    db.query(`DELETE FROM countryPlayers WHERE id = '${countryID}';`, (err,res) => {
                         if(err){
                             console.log("error occured during usunkraj.js (mysql)",err);
                         }
                         else{
-                            db.query(`DELETE FROM country WHERE guildID='${guildID}' AND id='${countryID}'`, async (err, res2) => {
+                            db.query("DELETE FROM countryeconomy where countryid = '${countryID}';", (err,res3) => {
                                 if(err){
                                     console.log("error occured during usunkraj.js (mysql)",err); 
                                 }
-                                else {
-                                    try {
-                                        await interaction.editReply("Poprawnie usunięto kraj!\n",errlist);
-                                    } catch (error) {}
+                                else{
+                                    db.query(`DELETE FROM country WHERE guildID='${guildID}' AND id='${countryID}'`, async (err, res2) => {
+                                        if(err){
+                                            console.log("error occured during usunkraj.js (mysql)",err); 
+                                        }
+                                        else {
+                                            try {
+                                                await interaction.editReply("Poprawnie usunięto kraj!\n",errlist);
+                                            } catch (error) {}
+                                        }
+                                    });
                                 }
-                            });
+                            })
                         }
                     });
                 }

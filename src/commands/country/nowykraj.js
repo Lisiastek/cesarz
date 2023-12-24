@@ -50,7 +50,7 @@ module.exports = {
                     interaction.editReply("Kraj z takim ID lub nazwą już istnieje! wybierz inny");
                 }
                 else{
-                    await db.query(`INSERT INTO country (countryID, guildID, countryName) VALUES ('${tag}','${guildID}', '${name}')`);
+                    await db.query(`INSERT INTO country (countryID, guildID, countryName) VALUES ('${tag}','${guildID}', '${name}');`);
                     await interaction.editReply(`Utworzono kraj ${name} (o tagu: ${tag}), trwa tworzenie kanałów...`);
 
 
@@ -58,8 +58,8 @@ module.exports = {
                     // tworzenie kanałów
                     const guild = interaction.guild;
                     const zwerfRole = await guild.roles.cache.find((r) => r.name === 'zweryfikowany');
-                    const gameMasterRole = await guild.roles.cache.find((r) => r.name === 'Game Master');
-                    const playerRole = await guild.roles.cache.find((r) => r.name === 'Gracz');
+                    const gameMasterRole = await guild.roles.cache.find((r) => r.name === '💙 ∣ GameMaster');
+                    const playerRole = await guild.roles.cache.find((r) => r.name === '💜 ║ Członek');
 
                     const countryRole = await guild.roles.create({
                         name: `${name}`,
@@ -218,7 +218,18 @@ module.exports = {
                     await inf.send(`Prosimy o uzupełnienie <@&${countryRole.id}> :+1:`);
                     await armia.send("Sprostowanie co do armii: Tutaj możesz wysyłać swoje badania jak i statystyki swojej armii, do tego kanału masz dostęp tylko ty i GM!");
 
-                    interaction.editReply(`Utworzono kraj ${name} (o tagu: ${tag})! Udało sie`)
+
+
+                    db.query(`SELECT id, countryName from country WHERE guildID = '${guildID}' AND countryID = '${tag}'`, (err,res2) => {
+                        if(err){
+                            console.log("something went wrong in nowykraj.js while dealing with country economy");
+                        }
+                        else{
+                            db.query(`INSERT INTO countryeconomy (countryID,balance) values ('${res2[0]['id']}', 0)`);
+                        }
+                    })
+
+                    interaction.editReply(`Utworzono kraj ${name} (o tagu: ${tag})! Udało sie`);
 
                 }
             }
