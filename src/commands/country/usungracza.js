@@ -12,7 +12,8 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             required: true,
             min_length: 3,
-            max_length: 3
+            max_length: 3,
+            autocomplete: true
         },
         {
             name: "gracz",
@@ -35,7 +36,7 @@ module.exports = {
         const db = require("../../util/db.js");
         const guildID = interaction.guildId;
 
-        db.query(`SELECT id from country WHERE guildID = '${guildID}' AND countryID = '${tag}'`, (err,res) => {
+        db.query(`SELECT * from country WHERE guildID = '${guildID}' AND countryID = '${tag}'`, (err,res) => {
             if(err){
                 console.log("Something went wrong in dodajgracza.js: ", err)
             }
@@ -50,11 +51,14 @@ module.exports = {
                                 interaction.followUp("Tego gracza nie ma w tym kraju!")
                             }else{
                                 db.query(`DELETE FROM countryPlayers where id='${id}' AND playerID='${name.id}';`,
-                                (err, res2) => {
+                                async (err, res2) => {
                                     if(err){
                                         console.log("Something went wrong in dodajgracza.js", err);
                                     }
                                     else{
+                                        try {
+                                            await interaction.member.roles.remove(await interaction.guild.roles.cache.find((r) => r.name === res[0]['countryName']));
+                                        } catch (error) {}
                                         interaction.followUp(`poprawnie usunięto <@${name.id}> jako użytkownika kraju o tagu ${tag}`);
                                     }
                                 });

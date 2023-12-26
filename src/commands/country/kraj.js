@@ -12,7 +12,8 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             required: true,
             min_length: 3,
-            max_length: 3
+            max_length: 3,
+            autocomplete: true
         }
     ],
     deleted: false,
@@ -28,52 +29,52 @@ module.exports = {
         const db = require("../../util/db.js");
         const guildID = interaction.guildId;
 
-        await db.query(`SELECT id, countryName from country WHERE guildID = '${guildID}' AND countryID = '${tag}'`,
-        (err, res) => {
-            if(err){
-                console.log("Something went wrong in ktorzadzi.js while working with database:\n\n",err);
-            }
-            else
-            {
-                if(res.length > 0){
-                    const id = res[0]['id'];
-                    const name = res[0]['countryName']
-
-                    db.query(`SELECT playerID from countryPlayers WHERE id = ${id}`,
-                    (err, res2) => {
-                        if(err){
-                            console.log("Something went wrong in ktorzadzi.js while working with database:\n\n",err);
-                        }else{
-                            var managers=" ";
-                            // kto rządzi krajem
-                            for(const player of res2){
-                                managers += `<@${player['playerID']}> `;
-                            }
-
-                            const emb = new EmbedBuilder().setFooter({
-                                text:":3"
-                            }).setColor("LuminousVividPink")
-                            .setTitle(`kraj ${name}`)
-                            .setAuthor({ name: `Statystyki ogólne`})
-                            .addFields(
-                                {name:"Władca", value: "Benito mussolini", inline: true},
-                                {name:"ustrój",value:"komunizm", inline: true},
-                                {name:"populacja", value: "502004212121", inline: true},
-                                {name:"podatki",value:"wysokie", inline: true},
-                                {name:"pkb",value:"wysokie", inline: true},
-                                {name:"inflacja",value:"32%", inline: true},
-                                {name:"Gracze", value: managers},
-                            ).setTimestamp();
-
-                            interaction.followUp({embeds: [emb]});
-                        }
-                    });
+        db.query(`SELECT * from country LEFT JOIN countryeconomy ON country.id = countryeconomy.countryID LEFT JOIN countryinfo ON country.id = countryinfo.countryID LEFT JOIN currency ON currency.id = countryeconomy.currencyID WHERE country.guildID = '${guildID}' AND country.countryID = '${tag}'`,
+            (err, res) => {
+                if (err) {
+                    console.log("Something went wrong in ktorzadzi.js while working with database:\n\n", err);
                 }
-                else{
-                    interaction.followUp("Kraj z takim tagiem nie istnieje!");
+
+                else {
+                    if (res.length > 0) {
+                        const id = res[0]['countryID'];
+                        const name = res[0]['countryName'];
+
+                        db.query(`SELECT playerID from countryPlayers WHERE id = ${id}`,
+                            (err, res2) => {
+                                if (err) {
+                                    console.log("Something went wrong in ktorzadzi.js while working with database:\n\n", err);
+                                } else {
+                                    var managers = " ";
+                                    // kto rządzi krajem
+                                    for (const player of res2) {
+                                        managers += `<@${player['playerID']}> `;
+                                    }
+
+                                    const emb = new EmbedBuilder().setFooter({
+                                        text: ":3"
+                                    }).setColor("LuminousVividPink")
+                                        .setTitle(`kraj ${name}`)
+                                        .setAuthor({ name: `Statystyki ogólne` })
+                                        .addFields(
+                                            { name: "Władca", value: res[0]['wladca'] ? res[0]['wladca'] : "Brak", inline: true },
+                                            { name: "ustrój", value: res[0]['ustroj'] ? res[0]['ustroj'] : "Nie sprecyzowano", inline: true },
+                                            { name: "populacja", value: res[0]['populacja'] ? String(res[0]['populacja']) : "Brak", inline: true },
+                                            { name: "podatki", value: `${String(res[0]['pod_cyw']*100)}%`, inline: true },
+                                            { name: "pkb", value: `${String(res[0]['pkb'])} ${res[0]['currencyName'] ? res[0]['currencyName'] : "MWR"}`, inline: true },
+                                            { name: "inflacja", value: `${String(res[0]['inflacja']*100)}%`, inline: true },
+                                            { name: "Gracze", value: managers }
+                                        ).setTimestamp();
+
+                                    interaction.followUp({ embeds: [emb] });
+                                }
+                            });
+                    }
+                    else {
+                        interaction.followUp("Kraj z takim tagiem nie istnieje!");
+                    }
                 }
-            }
-        });
+            });
     }
 
 }

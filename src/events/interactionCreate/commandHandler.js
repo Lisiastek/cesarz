@@ -7,6 +7,7 @@ require("dotenv").config({
 
 module.exports = async (client, interaction) => {
     if(!interaction.isChatInputCommand) return;
+    if(interaction.isAutocomplete()) return;
 
     const localCommands = getlocalcommands();
 
@@ -19,7 +20,7 @@ module.exports = async (client, interaction) => {
 
         if(commandObject.devOnly){
             if(!(devs.includes(interaction.member.id))){
-                interaction.reply({
+                await interaction.reply({
                     content: "Ta komenda jest przeznaczona tylko i wyłącznie dla deweloperów bota!",
                     ephemeral: true
                 });
@@ -29,7 +30,7 @@ module.exports = async (client, interaction) => {
 
         if(commandObject.testOnly){
             if(!(interaction.guild.id === process.env.TESTGUILD)){
-                interaction.reply({
+                await interaction.reply({
                     content: "Ta komenda jest przeznaczona tylko i wyłącznie do użytku na testowym serwerze!",
                     ephemeral: true
                 });
@@ -42,7 +43,7 @@ module.exports = async (client, interaction) => {
                 if(!interaction.member.permissions.has(permission)){
                     interaction.reply({
                         content: "Bot odmówił wykonania komendy ze względu na niewystarczające uprawnienia użytkownika!",
-                        ephemeral: true
+                        ephemeral: false
                     });
                     break;                  
                 }
@@ -57,7 +58,7 @@ module.exports = async (client, interaction) => {
                     if(!interaction.member.permissions.has(permission)){
                         interaction.reply({
                             content: "Bot odmówił wykonania komendy ze względu na niewystarczające uprawnienia bota!",
-                            ephemeral: true
+                            ephemeral: false
                         });
                         break;                
                     }                  

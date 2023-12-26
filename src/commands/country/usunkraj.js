@@ -15,7 +15,8 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             required: true,
             min_length: 3,
-            max_length: 3
+            max_length: 3,
+            autocomplete: true
         }
     ],
     deleted: false,
@@ -74,19 +75,26 @@ module.exports = {
                             console.log("error occured during usunkraj.js (mysql)",err);
                         }
                         else{
-                            db.query("DELETE FROM countryeconomy where countryid = '${countryID}';", (err,res3) => {
+                            db.query(`DELETE FROM countryeconomy where countryid = '${countryID}';`, (err,res3) => {
                                 if(err){
                                     console.log("error occured during usunkraj.js (mysql)",err); 
                                 }
                                 else{
-                                    db.query(`DELETE FROM country WHERE guildID='${guildID}' AND id='${countryID}'`, async (err, res2) => {
+                                    db.query(`DELETE FROM countryinfo where countryid = '${countryID}';`, (err,res3) => {
                                         if(err){
                                             console.log("error occured during usunkraj.js (mysql)",err); 
                                         }
-                                        else {
-                                            try {
-                                                await interaction.editReply("Poprawnie usunięto kraj!\n",errlist);
-                                            } catch (error) {}
+                                        else{
+                                            db.query(`DELETE FROM country WHERE guildID='${guildID}' AND id='${countryID}'`, async (err, res2) => {
+                                                if(err){
+                                                    console.log("error occured during usunkraj.js (mysql)",err); 
+                                                }
+                                                else {
+                                                    try {
+                                                        await interaction.editReply("Poprawnie usunięto kraj!\n",errlist);
+                                                    } catch (error) {}
+                                                }
+                                            });
                                         }
                                     });
                                 }

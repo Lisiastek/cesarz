@@ -57,9 +57,9 @@ module.exports = {
 
                     // tworzenie kanałów
                     const guild = interaction.guild;
-                    const zwerfRole = await guild.roles.cache.find((r) => r.name === 'zweryfikowany');
+                    const zwerfRole = await guild.roles.cache.find((r) => r.name === '💜 ║ Członek');
                     const gameMasterRole = await guild.roles.cache.find((r) => r.name === '💙 ∣ GameMaster');
-                    const playerRole = await guild.roles.cache.find((r) => r.name === '💜 ║ Członek');
+                    // const playerRole = await guild.roles.cache.find((r) => r.name === name);
 
                     const countryRole = await guild.roles.create({
                         name: `${name}`,
@@ -112,7 +112,7 @@ module.exports = {
                                 deny: [PermissionsBitField.Flags.ViewChannel]
                             },
                             {
-                                id: playerRole.id,
+                                id: countryRole.id,
                                 allow: [PermissionsBitField.Flags.SendMessages]
                             },
                             {
@@ -134,7 +134,7 @@ module.exports = {
                                 deny: [PermissionsBitField.Flags.ViewChannel]
                             },
                             {
-                                id: playerRole.id,
+                                id: countryRole.id,
                                 allow: [PermissionsBitField.Flags.SendMessages,
                                     PermissionsBitField.Flags.ViewChannel]
                             },
@@ -157,7 +157,7 @@ module.exports = {
                                 deny: [PermissionsBitField.Flags.ViewChannel]
                             },
                             {
-                                id: playerRole.id,
+                                id: countryRole.id,
                                 allow: [PermissionsBitField.Flags.SendMessages,
                                     PermissionsBitField.Flags.ViewChannel]
                             },
@@ -180,7 +180,7 @@ module.exports = {
                                 deny: [PermissionsBitField.Flags.ViewChannel]
                             },
                             {
-                                id: playerRole.id,
+                                id: countryRole.id,
                                 allow: [PermissionsBitField.Flags.SendMessages,
                                     PermissionsBitField.Flags.ViewChannel]
                             },
@@ -203,7 +203,7 @@ module.exports = {
                                 deny: [PermissionsBitField.Flags.ViewChannel]
                             },
                             {
-                                id: playerRole.id,
+                                id: countryRole.id,
                                 allow: [PermissionsBitField.Flags.SendMessages,
                                     PermissionsBitField.Flags.ViewChannel]
                             },
@@ -220,12 +220,13 @@ module.exports = {
 
 
 
-                    db.query(`SELECT id, countryName from country WHERE guildID = '${guildID}' AND countryID = '${tag}'`, (err,res2) => {
+                    db.query(`SELECT id, countryName from country WHERE guildID = '${guildID}' AND countryID = '${tag}'`, async (err,res2) => {
                         if(err){
                             console.log("something went wrong in nowykraj.js while dealing with country economy");
                         }
                         else{
                             db.query(`INSERT INTO countryeconomy (countryID,balance) values ('${res2[0]['id']}', 0)`);
+                            db.query(`INSERT INTO countryinfo (countryID) values ('${res2[0]['id']}')`);
                         }
                     })
 

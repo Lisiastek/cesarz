@@ -15,7 +15,8 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             required: true,
             min_length: 3,
-            max_length: 3
+            max_length: 3,
+            autocomplete: true
         },
         {
             name: "moneytag",
@@ -23,7 +24,8 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             required: true,
             min_length: 3,
-            max_length: 3
+            max_length: 3,
+            autocomplete: true
         }
     ],
     deleted: false,
@@ -67,7 +69,7 @@ module.exports = {
                                     aktualnanazwa = res2[0]['currencyTag'].toUpperCase()
                                 }
 
-                                // obsługa zmiany na domyślną walutę
+
                                 let nowawartoscwaluty = 1;
                                 let crid = "NULL";
                                 if(!(moneytag == "MWR")){
@@ -75,13 +77,15 @@ module.exports = {
                                     crid = `'${String(res[0]['id'])}'`
                                 }
 
-                                console.log(aktualnawartoscwaluty, " ", nowawartoscwaluty)
+                                const kurs = aktualnawartoscwaluty / nowawartoscwaluty;
 
                                 const balans = res2[0]['balance'];
                                 const nowybalans = balans / aktualnawartoscwaluty * nowawartoscwaluty;
-                                const kurs = aktualnawartoscwaluty / nowawartoscwaluty;
 
-                                db.query(`UPDATE countryeconomy SET currencyID = ${crid}, balance = '${String(nowybalans)}' WHERE countryID = '${String(res2[0]['id'])}'`, (err,res) => {
+                                const pkb = res2[0]['pkb'];
+                                const nowypkb = pkb / aktualnawartoscwaluty * nowawartoscwaluty;
+
+                                db.query(`UPDATE countryeconomy SET currencyID = ${crid}, balance = '${String(nowybalans)}', pkb = '${String(nowypkb)}' WHERE countryID = '${String(res2[0]['id'])}'`, (err,res) => {
                                     if(err){
                                         console.log("Something went wrong in walutaustaw.js with mysql\n\n", err);
                                     }

@@ -15,7 +15,8 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             required: true,
             min_length: 3,
-            max_length: 3
+            max_length: 3,
+            autocomplete: true
         },
         {
             name: "sila",

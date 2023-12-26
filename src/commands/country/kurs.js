@@ -7,20 +7,22 @@ module.exports = {
     // testOnly: false,
     options: [
         {
-            name:"tag1",
+            name:"moneytag1",
             type:ApplicationCommandOptionType.String,
             min_length:3,
             max_length:3,
             description:"Tag waluty z której jest przeliczane",
-            required:true
+            required:true,
+            autocomplete: true
         },
         {
-            name:"tag2",
+            name:"moneytag2",
             type:ApplicationCommandOptionType.String,
             min_length:3,
             max_length:3,
             description:"Tag waluty do której jest przeliczane",
-            required:true
+            required:true,
+            autocomplete: true
         },
         {
             name:"wartosc",

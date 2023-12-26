@@ -12,7 +12,8 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             required: true,
             min_length: 3,
-            max_length: 3
+            max_length: 3,
+            autocomplete: true
         }
     ],
     deleted: false,
@@ -55,8 +56,9 @@ module.exports = {
                                 {name:"Budżet", value: `${String(res2[0]['balance'])} ${znakwaluty}`, inline: true},
                                 {name:"ustrój",value:"komunizm", inline: true},
                                 {name:"podatki",value:`${String(res2[0]['pod_cyw']*100)}%`, inline: true},
-                                {name:"pkb",value:"wysokie", inline: true},
-                                {name:"inflacja",value:"32%", inline: true},
+                                {name:"pkb",value: `${String(res2[0]['pkb'])} ${znakwaluty}`, inline: true},
+                                {name:"inflacja",value:`${String(res2[0]['inflacja']*100)}%`, inline: true},
+                                {name:"inflacja całkowita",value:`${String(res2[0]['inflacjacalkowita']*100)}%`, inline: true},
                             ).setTimestamp();
 
                             interaction.followUp({embeds: [emb]});

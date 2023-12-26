@@ -12,7 +12,8 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             required: true,
             min_length: 3,
-            max_length: 3
+            max_length: 3,
+            autocomplete: true
         },
         {
             name: "gracz",
@@ -35,7 +36,7 @@ module.exports = {
         const db = require("../../util/db.js");
         const guildID = interaction.guildId;
 
-        db.query(`SELECT id from country WHERE guildID = '${guildID}' AND countryID = '${tag}'`, (err,res) => {
+        db.query(`SELECT * from country WHERE guildID = '${guildID}' AND countryID = '${tag}'`, (err,res) => {
             if(err){
                 console.log("Something went wrong in dodajgracza.js: ", err)
             }
@@ -50,12 +51,15 @@ module.exports = {
                                 interaction.followUp("Ten gracz już tutaj jest")
                             }else{
                                 db.query(`INSERT INTO countryPlayers (id, playerID) VALUES (${id}, '${name.id}')`,
-                                (err, res2) => {
+                                async (err, res2) => {
                                     if(err){
                                         console.log("Something went wrong in dodajgracza.js", err);
                                     }
                                     else{
-                                        interaction.followUp(`Poprawnie dodano <@${name.id}> jako użytkownika kraju o tagu ${tag}`);
+                                        try {
+                                            await interaction.member.roles.add(await interaction.guild.roles.cache.find((r) => r.name === res[0]['countryName']));
+                                        } catch (error) {}
+                                        await interaction.followUp(`Poprawnie dodano <@${name.id}> jako użytkownika kraju o tagu ${tag}`);
                                     }
                                 });
                             }
