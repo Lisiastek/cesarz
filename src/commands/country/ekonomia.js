@@ -40,7 +40,7 @@ module.exports = {
                     const id = res[0]['id'];
                     const name = res[0]['countryName']
 
-                    db.query(`SELECT * from countryeconomy LEFT JOIN currency ON countryeconomy.currencyID = currency.id WHERE countryID = '${id}'`,
+                    db.query(`SELECT * from countryeconomy LEFT JOIN countryinfo ON countryeconomy.countryID = countryinfo.countryID LEFT JOIN currency ON countryeconomy.currencyID = currency.id WHERE countryeconomy.countryID = '${id}'`,
                     (err, res2) => {
                         if(err){
                             console.log("Something went wrong in ktorzadzi.js while working with database:\n\n",err);
@@ -54,9 +54,13 @@ module.exports = {
                             .setAuthor({ name: `Statystyki ogólne`})
                             .addFields(
                                 {name:"Budżet", value: `${String(res2[0]['balance'])} ${znakwaluty}`, inline: true},
-                                {name:"ustrój",value:"komunizm", inline: true},
+                                {name:"ostatnie wpływy", value: res2[0]['ostatniprzychod'] != null ? String(res2[0]['ostatniprzychod']) : "Kraj nigdy nie miał :(", inline: true},
                                 {name:"podatki",value:`${String(res2[0]['pod_cyw']*100)}%`, inline: true},
                                 {name:"pkb",value: `${String(res2[0]['pkb'])} ${znakwaluty}`, inline: true},
+                                {name:"prognozowany wzrost pkb",value:`${String(res2[0]['wzrostpkb']*100)}%`, inline: true},   
+                                {name:"ostatni wzrost pkb", value: res2[0]['ostatniwzrostpkb'] != null ? String(res2[0]['ostatniwzrostpkb']) : "Kraj jeszcze nie zanotował", inline: true},     
+                                {name:"waluta",value: `${znakwaluty} (TAG:` + (res2[0]['currencyTag'] != null ? String(res2[0]['currencyTag']) : "MWR") + ")", inline: true},                       
+                                {name:"wartość waluty",value: `${znakwaluty} = ` + (res2[0]['currencyValue'] != null ? String(res2[0]['currencyValue']) : "1"), inline: true},
                                 {name:"inflacja",value:`${String(res2[0]['inflacja']*100)}%`, inline: true},
                                 {name:"inflacja całkowita",value:`${String(res2[0]['inflacjacalkowita']*100)}%`, inline: true},
                             ).setTimestamp();

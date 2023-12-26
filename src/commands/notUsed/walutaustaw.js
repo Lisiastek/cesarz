@@ -28,7 +28,7 @@ module.exports = {
             autocomplete: true
         }
     ],
-    deleted: false,
+    deleted: true,
 
     permissionsRequired: [PermissionsBitField.Flags.ViewAuditLog],
     botPermissions: [],

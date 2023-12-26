@@ -277,6 +277,10 @@ module.exports = {
                                                                 .setFooter({text:`Wykonał: ${interaction.member.displayName} :3`})
                                                                 .setTimestamp()
                                                                 .setColor("DarkGold");
+
+                                                                // jeszcze dodaje liczbe operacji wsm
+                                                                if(tagWaluta != "MWR")
+                                                                db.query(`UPDATE currency SET liczbaoperacji = liczbaoperacji + 1 where id = '${res3[0]['id']}'`, (err) => {});
                                             
                                                                 await interaction.followUp({embeds: [emb]}); 
                                                                             }

@@ -33,7 +33,7 @@ module.exports = {
             max_length: 5
         }
     ],
-    deleted: false,
+    deleted: true,
 
     permissionsRequired: [PermissionsBitField.Flags.ViewAuditLog],
     botPermissions: [PermissionsBitField.Flags.ManageChannels],

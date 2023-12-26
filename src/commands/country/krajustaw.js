@@ -218,79 +218,79 @@ module.exports = {
 
 
 
-        {
-            name: "inflacja",
-            description: "zarządzanie inflacja kraju",
-            type: ApplicationCommandOptionType.SubcommandGroup,
-            options: [
-                {
-                    name: "ustaw",
-                    description: "ustaw inflacje",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                            {
-                                name: "tag",
-                                description: "ID kraju poprostu",
-                                type: ApplicationCommandOptionType.String,
-                                required: true,
-                                min_length: 3,
-                                max_length: 3,
-                                autocomplete: true
-                            },
-                            {
-                                name: "kwota",
-                                description: "Kwota na ktorą zostanie ustawiona inflacja (ułamek dziesiętny)",
-                                type: ApplicationCommandOptionType.Number,
-                                required: true,
-                            }
-                    ]
-                },
-                {
-                    name: "zmien",
-                    description: "zmien inflację o określoną kwotę",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "tag",
-                            description: "ID kraju poprostu",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                            min_length: 3,
-                            max_length: 3,
-                            autocomplete: true
-                        },
-                        {
-                            name: "kwota",
-                            description: "Kwota o ktorą zostanie zmieniona inflacja (ułamek dziesiętny)",
-                            type: ApplicationCommandOptionType.Number,
-                            required: true,
-                        }
-                    ]
-                },
-                {
-                    name: "zmienprocent",
-                    description: "zmien inflacji o określony %",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "tag",
-                            description: "ID kraju poprostu",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                            min_length: 3,
-                            max_length: 3,
-                            autocomplete: true
-                        },
-                        {
-                            name: "procent",
-                            description: "Kwota o ktorą zostanie zmieniona inflacja (ułamek dziesiętny)",
-                            type: ApplicationCommandOptionType.Number,
-                            required: true,
-                        }
-                    ]
-                }
-            ]
-        },        
+        // {
+        //     name: "inflacja",
+        //     description: "zarządzanie inflacja kraju",
+        //     type: ApplicationCommandOptionType.SubcommandGroup,
+        //     options: [
+        //         {
+        //             name: "ustaw",
+        //             description: "ustaw inflacje",
+        //             type: ApplicationCommandOptionType.Subcommand,
+        //             options: [
+        //                     {
+        //                         name: "tag",
+        //                         description: "ID kraju poprostu",
+        //                         type: ApplicationCommandOptionType.String,
+        //                         required: true,
+        //                         min_length: 3,
+        //                         max_length: 3,
+        //                         autocomplete: true
+        //                     },
+        //                     {
+        //                         name: "kwota",
+        //                         description: "Kwota na ktorą zostanie ustawiona inflacja (ułamek dziesiętny)",
+        //                         type: ApplicationCommandOptionType.Number,
+        //                         required: true,
+        //                     }
+        //             ]
+        //         },
+        //         {
+        //             name: "zmien",
+        //             description: "zmien inflację o określoną kwotę",
+        //             type: ApplicationCommandOptionType.Subcommand,
+        //             options: [
+        //                 {
+        //                     name: "tag",
+        //                     description: "ID kraju poprostu",
+        //                     type: ApplicationCommandOptionType.String,
+        //                     required: true,
+        //                     min_length: 3,
+        //                     max_length: 3,
+        //                     autocomplete: true
+        //                 },
+        //                 {
+        //                     name: "kwota",
+        //                     description: "Kwota o ktorą zostanie zmieniona inflacja (ułamek dziesiętny)",
+        //                     type: ApplicationCommandOptionType.Number,
+        //                     required: true,
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             name: "zmienprocent",
+        //             description: "zmien inflacji o określony %",
+        //             type: ApplicationCommandOptionType.Subcommand,
+        //             options: [
+        //                 {
+        //                     name: "tag",
+        //                     description: "ID kraju poprostu",
+        //                     type: ApplicationCommandOptionType.String,
+        //                     required: true,
+        //                     min_length: 3,
+        //                     max_length: 3,
+        //                     autocomplete: true
+        //                 },
+        //                 {
+        //                     name: "procent",
+        //                     description: "Kwota o ktorą zostanie zmieniona inflacja (ułamek dziesiętny)",
+        //                     type: ApplicationCommandOptionType.Number,
+        //                     required: true,
+        //                 }
+        //             ]
+        //         }
+        //     ]
+        // },        
 
 
 

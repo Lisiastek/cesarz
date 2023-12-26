@@ -40,8 +40,8 @@ module.exports = {
     callback: async (client, interaction) => {
         await interaction.deferReply();
 
-        const tag1 = await interaction.options.getString('tag1').toUpperCase();
-        const tag2 = await interaction.options.getString('tag2').toUpperCase();
+        const tag1 = await interaction.options.getString('moneytag1').toUpperCase();
+        const tag2 = await interaction.options.getString('moneytag2').toUpperCase();
 
         const wartosc = await interaction.options.getNumber('wartosc') ? await interaction.options.getNumber('wartosc') : 1;
 

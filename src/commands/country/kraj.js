@@ -66,6 +66,10 @@ module.exports = {
                                             { name: "Gracze", value: managers }
                                         ).setTimestamp();
 
+                                        if(res[0]['flagURL'] != null){
+                                            emb.setImage(res[0]['flagURL']);
+                                        }
+
                                     interaction.followUp({ embeds: [emb] });
                                 }
                             });

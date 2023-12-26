@@ -4,7 +4,7 @@
 const {ApplicationCommandOptionType, PermissionsBitField} = require('discord.js');
 
 module.exports = {
-    name: 'opodatkowanie',
+    name: 'flaga',
     description: 'umożliwia zmianę opodatkowania w kraju',
     // devOnly: false,
     // testOnly: false,
@@ -19,44 +19,10 @@ module.exports = {
             autocomplete: true
         },
         {
-            name: "sila",
-            description: "opodatkowanie",
-            type: ApplicationCommandOptionType.Number,
+            name: "flaga",
+            description: "Nowa flaga kraju",
+            type: ApplicationCommandOptionType.Attachment,
             required: true,
-            choices: [
-                {
-                    name: "brak podatków (0%)",
-                    value: 0
-                },
-                {
-                    name: "raj podatkowy (2%)",
-                    value: 0.02
-                },      
-                {
-                    name: "opodatkowanie bardzo małe (5%)",
-                    value: 0.05
-                },   
-                {
-                    name: "opodatkowanie małe (10%)",
-                    value: 0.10
-                },    
-                {
-                    name: "opodatkowanie normalne (20%)",
-                    value: 0.20
-                },       
-                {
-                    name: "opodatkowanie wysokie (25%)",
-                    value: 0.20
-                },      
-                {
-                    name: "opodatkowanie wysokie (40%)",
-                    value: 0.40
-                },   
-                {
-                    name: "opodatkowanie dratyczne (60%)",
-                    value: 0.60
-                },   
-            ]
         }
     ],
     deleted: false,
@@ -68,7 +34,7 @@ module.exports = {
         await interaction.deferReply();
 
         const tag = interaction.options.getString('tag').toUpperCase(); 
-        const sila = interaction.options.getNumber('sila'); 
+        const flaga = interaction.options.getAttachment('flaga'); 
 
         const db = require("../../util/db.js");
         const guildID = interaction.guildId;
@@ -103,7 +69,7 @@ module.exports = {
                                 }
                             }
                             if(jest){
-                                db.query(`UPDATE countryeconomy SET pod_cyw = ${String(sila)} where countryID = '${res[0]['id']}'`, async (err,res) => {
+                                db.query(`UPDATE countryinfo SET flagURL = '${String(flaga.attachment)}' where countryID = '${res[0]['id']}'`, async (err,res) => {
                                     if(err){
                                         console.log("cos poszło nie tak w opodatkowanie.js",err);
                                         try {
@@ -111,7 +77,7 @@ module.exports = {
                                         } catch (error) {}
                                     }
                                     else{
-                                        await interaction.editReply("Poprawnie zmieniono opodatkowanie!");
+                                        await interaction.editReply("Poprawnie zmieniono flagę :3");
                                     }
                                 });
                             }
